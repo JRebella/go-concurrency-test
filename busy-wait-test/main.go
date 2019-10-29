@@ -6,5 +6,6 @@ func main() {
 	fmt.Println("\nStarting tests...")
 
 	sim := &Simulator{}
-	sim.Init(50000, 255200, 300003)
+	// Recommended: 3-2-2
+	sim.Init(3, 2, 2)
 }

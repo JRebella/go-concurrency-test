@@ -27,12 +27,11 @@ func (c *Consumer) StartConsuming(sim *Simulator) {
 			panic("Panic")
 		}
 
+		fmt.Println(">>>>>Consuming value ", extractedValue)
 		c.simulator.nextToConsume++
 
 		c.simulator.mutex.Release(1) //Signal buffer is free to use
 		c.simulator.full.Release(1)  //Signal buffer has room for more data
-
-		fmt.Println(">>>>>Consuming value ", extractedValue)
 
 		time.Sleep(time.Duration(rand.Intn(4)+1) * time.Second)
 	}
