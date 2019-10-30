@@ -1,25 +1,19 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"time"
-
-	"golang.org/x/sync/semaphore"
 )
 
 // Simulator a
 type Simulator struct {
 	buffer *Buffer
 
+	// Used by petersons algorithm
 	level       []int
 	lastToEnter []int
 
 	N int // Number of consumers + producers
-
-	mutex *semaphore.Weighted // Mutex for concurrent access to the level arrays
-
-	context context.Context //Requiered by the semaphore
 
 	consumers []*Consumer // Consumers list
 	producers []*Producer // Producers list
@@ -29,7 +23,7 @@ type Simulator struct {
 }
 
 // Init starts the simulator with the given values
-func (s *Simulator) Init(bufferSize int, producerCount int, consumerCount int) {
+func (s *Simulator) Init(bufferSize int, producerCount int, consumerCount int, testDuration int) {
 	fmt.Println("Starting Simulator...")
 	// Start buffer
 	s.buffer = &Buffer{
@@ -47,15 +41,9 @@ func (s *Simulator) Init(bufferSize int, producerCount int, consumerCount int) {
 		s.lastToEnter[i] = -1
 	}
 
-	// Init the context variable
-	s.context = context.Background()
-
 	// Init last number
 	s.nextToConsume = 0
 	s.nextToProduce = 0
-
-	// Start semaphores
-	s.mutex = semaphore.NewWeighted(int64(1))
 
 	s.consumers = []*Consumer{}
 	s.producers = []*Producer{}
@@ -81,7 +69,7 @@ func (s *Simulator) Init(bufferSize int, producerCount int, consumerCount int) {
 		PID++
 	}
 
-	time.Sleep(10 * time.Second)
+	time.Sleep(time.Duration(testDuration) * time.Second)
 	fmt.Println("-----------------------------------------")
 	fmt.Println("Test finished, Total inserts: ", s.nextToProduce, " Total Consumed: ", s.nextToConsume)
 }

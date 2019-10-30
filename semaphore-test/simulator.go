@@ -26,7 +26,7 @@ type Simulator struct {
 }
 
 // Init starts the simulator with the given values
-func (s *Simulator) Init(bufferSize int, producerCount int, consumerCount int) {
+func (s *Simulator) Init(bufferSize int, producerCount int, consumerCount int, testDuration int) {
 	fmt.Println("Starting Simulator...")
 	// Start buffer
 	s.buffer = &Buffer{
@@ -66,7 +66,7 @@ func (s *Simulator) Init(bufferSize int, producerCount int, consumerCount int) {
 		go newProducer.StartProducing(s)
 	}
 
-	time.Sleep(10 * time.Second)
+	time.Sleep(time.Duration(testDuration) * time.Second)
 	fmt.Println("-----------------------------------------")
 	fmt.Println("Test finished, Total inserts: ", s.nextToProduce-1, " Total Consumed: ", s.nextToConsume-1)
 

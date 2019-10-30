@@ -7,5 +7,5 @@ func main() {
 
 	sim := &Simulator{}
 	// Recommended: 3-2-2
-	sim.Init(3, 2, 2)
+	sim.Init(3, 2, 2, 40)
 }
